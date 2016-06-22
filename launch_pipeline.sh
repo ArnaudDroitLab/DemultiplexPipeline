@@ -38,14 +38,14 @@ do
 	sampleID=$(basename $file _R1_001.fastq.gz)
 
 	java -XX:ParallelGCThreads=1 -jar /home/nanuq-admin/nanuq-programs/software/trimmomatic/Trimmomatic-0.32/trimmomatic-0.32.jar \
-	PE -phred33 \
+	PE -phred33 -threads 8 \
 	$workdir/Demultiplexed_*/*/${sampleID}_R1_001.fastq.gz $workdir/Demultiplexed_*/*/${sampleID}_R2_001.fastq.gz \
 	$workdir/trim/${sampleID}_trim_R1.fastq.gz $workdir/trim/${sampleID}_trim_R1_unpaired.fastq.gz \
 	$workdir/trim/${sampleID}_trim_R2.fastq.gz $workdir/trim/${sampleID}_trim_R2_unpaired.fastq.gz \
 	ILLUMINACLIP:$(FILE_ADAPTORS):2:30:10 \
-	TRAILING:30 MINLEN:36
+	TRAILING:30 MINLEN:36 &
 done
-
+wait
 
 # STEP 3 ALIGNING
 
